@@ -38,10 +38,7 @@
 </form>
 
 <div class="card" th:if="${result != null}">
-    <h3 th:text="'Ishod: ' + ${result.outcome}"></h3>
-    <p th:text="'Snaga protivnika: ' + ${result.opponentPower}"></p>
-    <p th:text="'Dobijeni bodovi: ' + ${result.gainedPoints}"></p>
-    <p th:if="${result != null}" th:text="'Novi level: ' + ${result.newLevel}"></p>
+    <h3 th:text="'Ishod: ' + ${result}"></h3>
 
     <div class="row" th:if="${character != null}">
         <div class="col">
@@ -52,5 +49,6 @@
         </div>
     </div>
 </div>
+
 </body>
 </html>

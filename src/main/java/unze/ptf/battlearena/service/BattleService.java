@@ -1,19 +1,24 @@
 package unze.ptf.battlearena.service;
 
 import org.springframework.stereotype.Service;
+import unze.ptf.battlearena.data.GameData;
 import unze.ptf.battlearena.model.Character;
+import unze.ptf.battlearena.model.Battle;
 
 import java.util.Random;
 
 @Service
 public class BattleService {
-    private final Random rnd = new Random();
 
-/* nakon prve borbe atributi power i lives karaktera se mijenjaju, ali se ne resetuju nikad više;
-i ako jednom postane jako snažan (npr. 10 powera), svi protivnici na nižim levelima su preslabi;
-ili ako izgubi snagu i živote, postaje preslab da ikad više pobijedi.*/
+    private final Random rnd = new Random();
+    private final GameData data;
+
+    public BattleService(GameData data) {
+        this.data = data;
+    }
+
     public Result simulate(Character c) {
-        int level = c.getLevel(); // koristi level iz samog karaktera
+        int level = c.getLevel();
         int opponentPower = Math.max(1, level + rnd.nextInt(5) - 2);
 
         int charPower = c.totalPower();
@@ -37,47 +42,29 @@ ili ako izgubi snagu i živote, postaje preslab da ikad više pobijedi.*/
             outcome = "PORAZ";
         }
 
-        // ⬇️ povećaj level nakon borbe
+        // Povećaj level karaktera
         c.setLevel(level + 1);
 
+        // Kreiraj Battle objekat sa 5 parametara (korektno)
+        Battle battle = new Battle(
+                c.getName(),               // playerName
+                "Random Opponent",         // opponentName (može se nasumično generisati)
+                charPower,                 // playerPower
+                opponentPower,             // opponentPower
+                outcome                    // result
+        );
+
+        // Dodaj borbu u GameData
+        data.addBattle(battle);
+
+        // Vrati rezultat za view
         return new Result(outcome, opponentPower, gainedPoints, c.getLevel());
     }
-/* Opcija 2 za balansiranu demo logiku je da Svaka borba kreće sa privremenim kopijama atributa – karakter “ne pamti” rezultate između borbi.
-Može se mijenjati servis tako da računa ishod, ali ne mijenja karakterove vrijednosti u trajnoj memoriji (tj. bez setLives() i setPower()).
-
-U tom slučaju funkcija simulate bi izgledala ovako:
-public Result simulate(Character c) {
-    int level = c.getLevel();
-    int opponentPower = Math.max(1, level + rnd.nextInt(5) - 2);
-    int charPower = c.totalPower();
-    int delta = charPower - opponentPower;
-
-    String outcome;
-    int gainedPoints = 0;
-
-    if (delta > 0) {
-        gainedPoints = 2 + Math.max(0, delta / 2);
-        outcome = "POBJEDA";
-    } else if (delta == 0) {
-        gainedPoints = 1;
-        outcome = "NERIJEŠENO";
-    } else {
-        outcome = "PORAZ";
-    }
-
-    c.setPoints(c.getPoints() + gainedPoints);
-    c.setLevel(level + 1);
-
-    return new Result(outcome, opponentPower, gainedPoints, c.getLevel());
-}
-*/
-
 
     public static class Result {
         public final String outcome;
         public final int opponentPower;
         public final int gainedPoints;
-
         public final int newLevel;
 
         public Result(String outcome, int opponentPower, int gainedPoints, int newLevel) {
@@ -86,6 +73,5 @@ public Result simulate(Character c) {
             this.gainedPoints = gainedPoints;
             this.newLevel = newLevel;
         }
-
     }
 }

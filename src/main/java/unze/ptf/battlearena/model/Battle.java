@@ -20,6 +20,9 @@ public class Battle {
         this.battleTime = LocalDateTime.now();
     }
 
+
+
+
     // Getteri i setteri
     public String getPlayerName() {
         return playerName;

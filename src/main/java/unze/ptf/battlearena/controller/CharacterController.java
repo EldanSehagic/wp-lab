@@ -66,7 +66,7 @@ public class CharacterController {
         }
 
         // Simulacija borbe i dodavanje u GameData (BattleService radi to)
-        String result = battleService.simulate(c);
+        String result = battleService.simulate(c).toString();
 
         model.addAttribute("characters", data.findAllCharacters());
         model.addAttribute("selectedId", characterId);
