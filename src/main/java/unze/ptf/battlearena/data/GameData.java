@@ -3,6 +3,7 @@ package unze.ptf.battlearena.data;
 import org.springframework.stereotype.Component;
 import unze.ptf.battlearena.model.Character;
 import unze.ptf.battlearena.model.Tool;
+import unze.ptf.battlearena.model.Battle;
 
 import java.util.*;
 
@@ -11,6 +12,7 @@ public class GameData {
 
     private final Map<Long, Character> characters = new LinkedHashMap<>();
     private final Map<Long, Tool> tools = new LinkedHashMap<>();
+    private final List<Battle> battles = new ArrayList<>(); // ➕ lista borbi
     private long charSeq = 1;
     private long toolSeq = 1;
 
@@ -20,7 +22,7 @@ public class GameData {
         saveTool(new Tool(null, "Štit", 1, 0));
         saveTool(new Tool(null, "Eliksir", 0, 1));
         saveTool(new Tool(null, "Koplje", 2, 0));
-        saveTool(new Tool(null, "Čarobni prsten", 2, 1)); // +2 power, +1 life (life cap 5)
+        saveTool(new Tool(null, "Čarobni prsten", 2, 1)); // +2 power, +1 life
 
         // seed characters
         saveCharacter(new Character(null, "Ayla", 5, 5, 0));
@@ -57,7 +59,7 @@ public class GameData {
         return t;
     }
 
-    // Kupovina alata: max 3 alata, lifeBoost pojedinačno max 1 (model već to poštuje)
+    // Kupovina alata
     public boolean buyTool(Long characterId, Long toolId, int pricePoints) {
         Character c = findCharacter(characterId);
         Tool t = findTool(toolId);
@@ -68,5 +70,14 @@ public class GameData {
         c.setPoints(c.getPoints() - pricePoints);
         c.addTool(t);
         return true;
+    }
+
+    // ➕ Battle metode
+    public List<Battle> findAllBattles() {
+        return new ArrayList<>(battles);
+    }
+
+    public void addBattle(Battle battle) {
+        battles.add(battle);
     }
 }
