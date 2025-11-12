@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Battle History</title>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial; margin: 40px; background-color: #f4f4f4; }
+        table { width: 80%; margin: auto; border-collapse: collapse; background: white; }
+        th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
+        th { background: #eee; }
+        h1 { text-align: center; }
+    </style>
+</head>
+<body>
+<h1>Battle History</h1>
+<table>
+    <tr>
+        <th>Player</th>
+        <th>Opponent</th>
+        <th>Result</th>
+        <th>Time</th>
+    </tr>
+    <tr th:each="b : ${battles}">
+        <td th:text="${b.playerName}"></td>
+        <td th:text="${b.opponentName}"></td>
+        <td th:text="${b.result}"></td>
+        <td th:text="${#temporals.format(b.battleTime, 'dd.MM.yyyy HH:mm')}"></td>
+    </tr>
+</table>
+</body>
+</html>
