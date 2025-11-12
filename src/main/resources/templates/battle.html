@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Battle</title>
+    <style>
+        body { font-family: sans-serif; margin: 24px; }
+        nav a { margin-right: 12px; }
+        .card { border:1px solid #ddd; padding:16px; border-radius:8px; margin-top:16px; }
+        .row { display:flex; gap:24px; }
+        .col { flex:1; }
+    </style>
+</head>
+<body>
+<nav>
+    <a href="/characters">Characters</a>
+    <a href="/tools">Tools</a>
+    <a href="/battle">Battle</a>
+</nav>
+
+<h2>Battle simulator</h2>
+
+<form th:action="@{/battle/start}" method="post">
+    <label>Character:
+        <select name="characterId" required>
+            <option th:each="c : ${characters}" th:value="${c.id}"
+                    th:selected="${selectedId} == ${c.id}"
+                    th:text="${c.name + ' [P:' + c.totalPower() + ', L:' + c.totalLives() + ', pts:' + c.points + ']'}"></option>
+        </select>
+    </label>
+    &nbsp;&nbsp;
+    <label>Level:
+        <input type="number" name="level" min="1"
+               th:value="${character != null ? character.level : 1}" readonly/>
+    </label>
+    &nbsp;&nbsp;
+    <button type="submit">Start battle</button>
+</form>
+
+<div class="card" th:if="${result != null}">
+    <h3 th:text="'Ishod: ' + ${result.outcome}"></h3>
+    <p th:text="'Snaga protivnika: ' + ${result.opponentPower}"></p>
+    <p th:text="'Dobijeni bodovi: ' + ${result.gainedPoints}"></p>
+    <p th:if="${result != null}" th:text="'Novi level: ' + ${result.newLevel}"></p>
+
+    <div class="row" th:if="${character != null}">
+        <div class="col">
+            <h4 th:text="'Karakter: ' + ${character.name}"></h4>
+            <p th:text="'Base power: ' + ${character.power}"></p>
+            <p th:text="'Lives: ' + ${character.lives}"></p>
+            <p th:text="'Points: ' + ${character.points}"></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

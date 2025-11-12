@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Tools</title>
+    <style>
+        body { font-family: sans-serif; margin: 24px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; }
+        th { background: #f2f2f2; }
+        nav a { margin-right: 12px; }
+        form { display:inline; }
+    </style>
+</head>
+<body>
+<nav>
+    <a href="/characters">Characters</a>
+    <a href="/tools">Tools</a>
+    <a href="/battle">Battle</a>
+</nav>
+
+<h2>Tools</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th><th>Name</th><th>+Power</th><th>+Life</th><th>Kupovina (3 pts)</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="t : ${tools}">
+        <td th:text="${t.id}"></td>
+        <td th:text="${t.name}"></td>
+        <td th:text="${t.powerBoost}"></td>
+        <td th:text="${t.lifeBoost}"></td>
+        <td>
+            <form th:action="@{/tools/buy}" method="post">
+                <select name="characterId">
+                    <option th:each="c : ${characters}" th:value="${c.id}"
+                            th:text="${c.name + ' (pts: ' + c.points + ')'}"></option>
+                </select>
+                <input type="hidden" name="toolId" th:value="${t.id}"/>
+                <button type="submit">Kupi</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

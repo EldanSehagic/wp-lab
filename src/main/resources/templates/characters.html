@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Characters</title>
+    <style>
+        body { font-family: sans-serif; margin: 24px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; }
+        th { background: #f2f2f2; }
+        .badge { background:#eee; padding:2px 6px; margin-right:6px; border-radius:4px; display:inline-block;}
+        nav a { margin-right: 12px; }
+    </style>
+</head>
+<body>
+<nav>
+    <a href="/characters">Characters</a>
+    <a href="/tools">Tools</a>
+    <a href="/battle">Battle</a>
+</nav>
+
+<h2>Characters</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th><th>Name</th><th>Power</th><th>Lives</th><th>Points</th><th>Total Power</th><th>Total Lives</th><th>Level</th><th>Tools</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="c : ${characters}">
+
+        <td th:text="${c.id}"></td>
+        <td th:text="${c.name}"></td>
+        <td th:text="${c.power}"></td>
+        <td th:text="${c.lives}"></td>
+        <td th:text="${c.points}"></td>
+        <td th:text="${c.totalPower()}"></td>
+        <td th:text="${c.totalLives()}"></td>
+        <td th:text="${c.level}"></td>
+        <td>
+        <span th:each="t : ${c.tools}"
+              th:text="${t.name}" class="badge"></span>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
