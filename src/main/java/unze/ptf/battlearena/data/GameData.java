@@ -60,17 +60,19 @@ public class GameData {
     }
 
     // Kupovina alata
-    public boolean buyTool(Long characterId, Long toolId, int pricePoints) {
-        Character c = findCharacter(characterId);
-        Tool t = findTool(toolId);
-        if (c == null || t == null) return false;
-        if (!c.canAddTool()) return false;
-        if (c.getPoints() < pricePoints) return false;
+    public void buyTool(Long characterId, Long toolId, int quantity) {
+        var character = findCharacter(characterId);
+        var tool = findTool(toolId);
+        if (character != null && tool != null) {
+            // dodaj alat karakteru
+            character.getTools().add(tool);
 
-        c.setPoints(c.getPoints() - pricePoints);
-        c.addTool(t);
-        return true;
+            // po želji povećaj atribute
+            character.setPower(character.getPower() + tool.getPowerBoost());
+            character.setLives(character.getLives() + tool.getLifeBoost());
+        }
     }
+
 
     // ➕ Battle metode
     public List<Battle> findAllBattles() {

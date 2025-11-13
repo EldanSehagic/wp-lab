@@ -7,7 +7,7 @@ import unze.ptf.battlearena.data.GameData;
 import unze.ptf.battlearena.model.Tool;
 
 @Controller
-@RequestMapping("/tools") // sve rute ovog kontrolera počinju sa /tools
+@RequestMapping("/tools")
 public class ToolController {
 
     private final GameData data;
@@ -21,14 +21,21 @@ public class ToolController {
     public String tools(Model model) {
         model.addAttribute("tools", data.findAllTools());
         model.addAttribute("characters", data.findAllCharacters()); // za kupovinu alata
-        return "tools"; // tools.html
+        return "tools";
+    }
+
+    // --- BUY TOOL ---
+    @PostMapping("/buy")
+    public String buyTool(@RequestParam Long characterId, @RequestParam Long toolId) {
+        data.buyTool(characterId, toolId, 3);
+        return "redirect:/tools";
     }
 
     // --- SHOW FORM TO ADD NEW TOOL ---
     @GetMapping("/new")
     public String showAddForm(Model model) {
         model.addAttribute("tool", new Tool());
-        return "editTool"; // editTool.html
+        return "editTool";
     }
 
     // --- SAVE NEW OR UPDATED TOOL ---

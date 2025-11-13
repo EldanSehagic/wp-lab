@@ -72,7 +72,7 @@ public class CharacterController {
         return "editCharacter";
     }
 
-    
+
 
     // --- BATTLE PAGE ---
     @GetMapping("/battle")

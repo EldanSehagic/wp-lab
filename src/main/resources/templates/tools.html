@@ -20,34 +20,32 @@
 
 <h2>Tools</h2>
 
-<form method="post" th:action="@{/tools/buy}">
-    <label>Choose Character:
-        <select name="characterId" required>
-            <option th:each="c : ${characters}" th:value="${c.id}" th:text="${c.name}"></option>
-        </select>
-    </label>
-
-    <table>
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Power Boost</th>
-            <th>Life Boost</th>
-            <th>Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="t : ${tools}">
-            <td th:text="${t.name}"></td>
-            <td th:text="${t.powerBoost}"></td>
-            <td th:text="${t.lifeBoost}"></td>
-            <td>
-                <button type="submit" th:name="toolId" th:value="${t.id}">Buy</button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</form>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Power Boost</th>
+        <th>Life Boost</th>
+        <th>Buy for Character</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="t : ${tools}">
+        <td th:text="${t.name}"></td>
+        <td th:text="${t.powerBoost}"></td>
+        <td th:text="${t.lifeBoost}"></td>
+        <td>
+            <form th:action="@{/tools/buy}" method="post">
+                <input type="hidden" name="toolId" th:value="${t.id}" />
+                <select name="characterId" required>
+                    <option th:each="c : ${characters}" th:value="${c.id}" th:text="${c.name}"></option>
+                </select>
+                <button type="submit">Buy</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
 
 </body>
 </html>
