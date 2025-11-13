@@ -1,15 +1,37 @@
 package unze.ptf.battlearena.model;
 
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "battles")
 public class Battle {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id; // DODAO SAM ID - OBAVEZNO ZA JPA
+
+    @Column(name = "player_name", nullable = false)
     private String playerName;
+
+    @Column(name = "opponent_name", nullable = false)
     private String opponentName;
+
+    @Column(name = "player_power")
     private int playerPower;
+
+    @Column(name = "opponent_power")
     private int opponentPower;
+
+    @Column(name = "result")
     private String result; // "Victory", "Defeat", "Draw"
+
+    @Column(name = "battle_time")
     private LocalDateTime battleTime;
+
+    // OBAVEZAN PRAZAN KONSTRUKTOR ZA JPA
+    public Battle() {
+    }
 
     public Battle(String playerName, String opponentName, int playerPower, int opponentPower, String result) {
         this.playerName = playerName;
@@ -20,10 +42,15 @@ public class Battle {
         this.battleTime = LocalDateTime.now();
     }
 
+    // Getteri i setteri OSTAJU ISTI + DODAJEMO getId() i setId()
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-
-    // Getteri i setteri
     public String getPlayerName() {
         return playerName;
     }

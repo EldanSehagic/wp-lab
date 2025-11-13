@@ -1,21 +1,40 @@
 package unze.ptf.battlearena.model;
 
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "characters")
 public class Character {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
+
+    @Column(name = "power")
     private int power;   // trenutna snaga
+
+    @Column(name = "lives")
     private int lives;   // 0..5
+
+    @Column(name = "points")
     private int points;  // skupljeni bodovi
+
+    @Column(name = "level")
     private int level; // broj odigranih borbi / trenutni level
+
+    // VEZA SA TOOL-OVIMA - OneToMany ili ElementCollection
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "character_id")
     private List<Tool> tools = new ArrayList<>(); // max 3
 
     public Character() {}
 
-    public Character(Long id, String name, int power, int lives, int points) {
-        this.id = id;
+    public Character(String name, int power, int lives, int points) {
         this.name = name;
         this.power = power;
         this.lives = lives;
@@ -23,6 +42,7 @@ public class Character {
         this.level = 0;
     }
 
+    // Getteri i setteri ostaju isti...
     public Long getId() { return id; }
     public String getName() { return name; }
     public int getPower() { return power; }

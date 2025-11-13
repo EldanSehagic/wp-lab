@@ -1,13 +1,12 @@
 package unze.ptf.battlearena.data;
 
-import org.springframework.stereotype.Component;
 import unze.ptf.battlearena.model.Character;
 import unze.ptf.battlearena.model.Tool;
 import unze.ptf.battlearena.model.Battle;
 
 import java.util.*;
 
-@Component
+// @Component  // ZAKOMENTARIŠI OVO - Spring neće više koristiti ovu klasu!
 public class GameData {
 
     private final Map<Long, Character> characters = new LinkedHashMap<>();
@@ -17,16 +16,16 @@ public class GameData {
     private long toolSeq = 1;
 
     public GameData() {
-        // seed tools
-        saveTool(new Tool(null, "Mač", 3, 0));
-        saveTool(new Tool(null, "Štit", 1, 0));
-        saveTool(new Tool(null, "Eliksir", 0, 1));
-        saveTool(new Tool(null, "Koplje", 2, 0));
-        saveTool(new Tool(null, "Čarobni prsten", 2, 1)); // +2 power, +1 life
+        // seed tools - KORISTI NOVI KONSTRUKTOR BEZ ID
+        saveTool(new Tool("Mač", 3, 0));
+        saveTool(new Tool("Štit", 1, 0));
+        saveTool(new Tool("Eliksir", 0, 1));
+        saveTool(new Tool("Koplje", 2, 0));
+        saveTool(new Tool("Čarobni prsten", 2, 1)); // +2 power, +1 life
 
-        // seed characters
-        saveCharacter(new Character(null, "Ayla", 5, 5, 0));
-        saveCharacter(new Character(null, "Borin", 4, 5, 0));
+        // seed characters - KORISTI NOVI KONSTRUKTOR BEZ ID
+        saveCharacter(new Character("Ayla", 5, 5, 0));
+        saveCharacter(new Character("Borin", 4, 5, 0));
     }
 
     // Characters
@@ -73,7 +72,6 @@ public class GameData {
         }
     }
 
-
     // ➕ Battle metode
     public List<Battle> findAllBattles() {
         return new ArrayList<>(battles);
@@ -86,9 +84,8 @@ public class GameData {
     public void deleteCharacter(Long id) {
         characters.remove(id);
     }
+
     public void deleteTool(Long id) {
         tools.remove(id);
     }
-
-
 }

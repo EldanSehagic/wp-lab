@@ -3,31 +3,53 @@ package unze.ptf.battlearena.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import unze.ptf.battlearena.data.GameData;
 import unze.ptf.battlearena.model.Tool;
+import unze.ptf.battlearena.model.Character;
+import unze.ptf.battlearena.repository.ToolRepository;
+import unze.ptf.battlearena.repository.CharacterRepository;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/tools")
 public class ToolController {
 
-    private final GameData data;
+    private final ToolRepository toolRepository;
+    private final CharacterRepository characterRepository;
 
-    public ToolController(GameData data) {
-        this.data = data;
+    public ToolController(ToolRepository toolRepository, CharacterRepository characterRepository) {
+        this.toolRepository = toolRepository;
+        this.characterRepository = characterRepository;
     }
 
     // --- LIST ALL TOOLS ---
     @GetMapping
     public String tools(Model model) {
-        model.addAttribute("tools", data.findAllTools());
-        model.addAttribute("characters", data.findAllCharacters()); // za kupovinu alata
+        model.addAttribute("tools", toolRepository.findAll());
+        model.addAttribute("characters", characterRepository.findAll()); // za kupovinu alata
         return "tools";
     }
 
     // --- BUY TOOL ---
     @PostMapping("/buy")
     public String buyTool(@RequestParam Long characterId, @RequestParam Long toolId) {
-        data.buyTool(characterId, toolId, 3);
+        Optional<Character> characterOpt = characterRepository.findById(characterId);
+        Optional<Tool> toolOpt = toolRepository.findById(toolId);
+
+        if (characterOpt.isPresent() && toolOpt.isPresent()) {
+            Character character = characterOpt.get();
+            Tool tool = toolOpt.get();
+
+            // dodaj alat karakteru
+            character.getTools().add(tool);
+
+            // po želji povećaj atribute
+            character.setPower(character.getPower() + tool.getPowerBoost());
+            character.setLives(character.getLives() + tool.getLifeBoost());
+
+            // sačuvaj promjene
+            characterRepository.save(character);
+        }
         return "redirect:/tools";
     }
 
@@ -41,23 +63,23 @@ public class ToolController {
     // --- SAVE NEW OR UPDATED TOOL ---
     @PostMapping("/save")
     public String saveTool(@ModelAttribute Tool tool) {
-        data.saveTool(tool);
+        toolRepository.save(tool);
         return "redirect:/tools";
     }
 
     // --- SHOW FORM TO EDIT TOOL ---
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
-        var tool = data.findTool(id);
-        if (tool == null) return "redirect:/tools";
-        model.addAttribute("tool", tool);
+        Optional<Tool> tool = toolRepository.findById(id);
+        if (tool.isEmpty()) return "redirect:/tools";
+        model.addAttribute("tool", tool.get());
         return "editTool";
     }
 
     // --- DELETE TOOL ---
     @GetMapping("/delete/{id}")
     public String deleteTool(@PathVariable Long id) {
-        data.deleteTool(id);
+        toolRepository.deleteById(id);
         return "redirect:/tools";
     }
 }

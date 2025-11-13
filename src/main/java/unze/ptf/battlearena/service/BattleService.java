@@ -1,9 +1,10 @@
 package unze.ptf.battlearena.service;
 
 import org.springframework.stereotype.Service;
-import unze.ptf.battlearena.data.GameData;
 import unze.ptf.battlearena.model.Character;
 import unze.ptf.battlearena.model.Battle;
+import unze.ptf.battlearena.repository.BattleRepository;
+import unze.ptf.battlearena.repository.CharacterRepository;
 
 import java.util.Random;
 
@@ -11,10 +12,12 @@ import java.util.Random;
 public class BattleService {
 
     private final Random rnd = new Random();
-    private final GameData data;
+    private final BattleRepository battleRepository;
+    private final CharacterRepository characterRepository;
 
-    public BattleService(GameData data) {
-        this.data = data;
+    public BattleService(BattleRepository battleRepository, CharacterRepository characterRepository) {
+        this.battleRepository = battleRepository;
+        this.characterRepository = characterRepository;
     }
 
     public Result simulate(Character c) {
@@ -54,8 +57,9 @@ public class BattleService {
                 outcome                    // result
         );
 
-        // Dodaj borbu u GameData
-        data.addBattle(battle);
+        // SAČUVAJ PROMJENE U BAZI
+        characterRepository.save(c); // Sačuvaj ažurirani karakter
+        battleRepository.save(battle); // Sačuvaj borbu u bazi
 
         // Vrati rezultat za view
         return new Result(outcome, opponentPower, gainedPoints, c.getLevel());

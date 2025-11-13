@@ -1,50 +1,52 @@
 package unze.ptf.battlearena.controller;
 
 import org.springframework.web.bind.annotation.*;
-import unze.ptf.battlearena.data.GameData;
 import unze.ptf.battlearena.model.Tool;
+import unze.ptf.battlearena.repository.ToolRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/tools")
 public class ToolRestController {
 
-    private final GameData data;
+    private final ToolRepository toolRepository;
 
-    public ToolRestController(GameData data) {
-        this.data = data;
+    public ToolRestController(ToolRepository toolRepository) {
+        this.toolRepository = toolRepository;
     }
 
     @GetMapping
     public List<Tool> getAllTools() {
-        return data.findAllTools();
+        return toolRepository.findAll();
     }
 
     @GetMapping("/{id}")
-    public Tool getTool(@PathVariable Long id) {
-        return data.findTool(id);
+    public Optional<Tool> getTool(@PathVariable Long id) {
+        return toolRepository.findById(id);
     }
 
     @PostMapping
     public Tool addTool(@RequestBody Tool tool) {
-        return data.saveTool(tool);
+        return toolRepository.save(tool);
     }
 
     @PutMapping("/{id}")
     public Tool updateTool(@PathVariable Long id, @RequestBody Tool tool) {
-        Tool existing = data.findTool(id);
-        if (existing != null) {
+        Optional<Tool> existingOpt = toolRepository.findById(id);
+        if (existingOpt.isPresent()) {
+            Tool existing = existingOpt.get();
             existing.setName(tool.getName());
             existing.setPowerBoost(tool.getPowerBoost());
             existing.setLifeBoost(tool.getLifeBoost());
-            return data.saveTool(existing);
+            return toolRepository.save(existing);
         }
         return null;
     }
 
     @DeleteMapping("/{id}")
     public void deleteTool(@PathVariable Long id) {
-        data.deleteTool(id);
+        toolRepository.deleteById(id);
     }
 }
