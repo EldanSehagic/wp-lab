@@ -2,6 +2,14 @@ Radili:Kemal Hasanspahić,
 Emin Veispahić,
 Eldan Šehagić
 
+Saved Settings: Generic H2 (Embedded)
+JDBC URL: jdbc:h2:mem:battleArenaDb
+User Name: sa
+Password: 12345678 
+http://localhost:8080/h2-console
+
+Sql
+Samo u application mora se promjeniti sifra za sql workbanch 
 
 🧩 Novi model – Battle
 
