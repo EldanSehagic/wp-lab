@@ -1,6 +1,7 @@
-Radili:Emin Veispahić,
-Eldan Šehagić,
-Kemal Hasanspahić
+Radili:Kemal Hasanspahić,
+Emin Veispahić,
+Eldan Šehagić
+
 
 🧩 Novi model – Battle
 
