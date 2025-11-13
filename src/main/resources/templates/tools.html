@@ -13,9 +13,9 @@
 </head>
 <body>
 <nav>
-    <a href="/characters">Characters</a>
-    <a href="/characters/tools">Tools</a>
-    <a href="/characters/battle">Battle</a>
+    <a href="/">Characters</a>
+    <a href="/tools">Tools</a>
+    <a href="/battle">Battle</a>
 </nav>
 
 <h2>Tools</h2>
@@ -35,7 +35,7 @@
         <td th:text="${t.powerBoost}"></td>
         <td th:text="${t.lifeBoost}"></td>
         <td>
-            <form th:action="@{/characters/tools/buy}" method="post">
+            <form th:action="@{/tools/buy}" method="post">
                 <input type="hidden" th:name="toolId" th:value="${t.id}"/>
                 <input type="hidden" th:name="characterId" th:value="${characters[0].id}"/>
                 <button type="submit">Buy</button>

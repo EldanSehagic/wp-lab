@@ -13,14 +13,14 @@
 </head>
 <body>
 <nav>
-    <a href="/characters">Characters</a>
-    <a href="/characters/tools">Tools</a>
-    <a href="/characters/battle">Battle</a>
+    <a href="/">Characters</a>
+    <a href="/tools">Tools</a>
+    <a href="/battle">Battle</a>
 </nav>
 
 <h2>Battle simulator</h2>
 
-<form th:action="@{/characters/battle/start}" method="post">
+<form th:action="@{/battle/start}" method="post">
     <label>Character:
         <select name="characterId" required>
             <option th:each="c : ${characters}" th:value="${c.id}"

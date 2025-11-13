@@ -14,14 +14,14 @@
 </head>
 <body>
 <nav>
-    <a href="/characters">Characters</a>
-    <a href="/characters/tools">Tools</a>
-    <a href="/characters/battle">Battle</a>
+    <a href="/">Characters</a>
+    <a href="/tools">Tools</a>
+    <a href="/battle">Battle</a>
 </nav>
 
 <h2>Characters</h2>
 
-<a href="/characters/new">Add New Character</a>
+<a href="/new">Add New Character</a>
 
 <table>
     <thead>
@@ -43,9 +43,11 @@
             <span th:each="t : ${c.tools}" th:text="${t.name}" class="badge"></span>
         </td>
         <td>
-            <a th:href="@{/characters/edit/{id}(id=${c.id})}">Edit</a> |
-            <a th:href="@{/characters/delete/{id}(id=${c.id})}" onclick="return confirm('Delete this character?');">Delete</a>
+            <a th:href="@{/edit/{id}(id=${c.id})}">Edit</a> |
+            <a th:href="@{/delete/{id}(id=${c.id})}"
+               onclick="return confirm('Delete this character?');">Delete</a>
         </td>
+
     </tr>
     </tbody>
 </table>

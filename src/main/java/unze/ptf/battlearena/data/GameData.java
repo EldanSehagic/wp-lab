@@ -80,4 +80,9 @@ public class GameData {
     public void addBattle(Battle battle) {
         battles.add(battle);
     }
+
+    public void deleteCharacter(Long id) {
+        characters.remove(id);
+    }
+
 }

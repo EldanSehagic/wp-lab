@@ -5,7 +5,10 @@
 </head>
 <body>
 <h2>Uredi lika</h2>
-<form th:action="@{/characters/save}" th:object="${character}" method="post">
+<form th:action="@{/save}" th:object="${character}" method="post">
+    <!-- Hidden field za ID -->
+    <input type="hidden" th:field="*{id}" />
+
     Ime: <input type="text" th:field="*{name}"/><br/>
     Snaga: <input type="number" th:field="*{power}"/><br/>
     Životi: <input type="number" th:field="*{lives}"/><br/>
@@ -13,8 +16,5 @@
     Nivo: <input type="number" th:field="*{level}"/><br/>
     <button type="submit">Sačuvaj</button>
 </form>
-
-
-
 </body>
 </html>

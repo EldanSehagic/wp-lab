@@ -11,7 +11,6 @@ import unze.ptf.battlearena.service.BattleService;
 import java.util.List;
 
 @Controller
-@RequestMapping("/characters")
 public class CharacterController {
 
     private final GameData data;
@@ -23,7 +22,7 @@ public class CharacterController {
     }
 
     // --- LIST ALL CHARACTERS ---
-    @GetMapping
+    @GetMapping("/")
     public String characters(Model model) {
         model.addAttribute("characters", data.findAllCharacters());
         return "characters"; // characters.html
@@ -39,26 +38,41 @@ public class CharacterController {
     // --- SAVE NEW OR UPDATED CHARACTER ---
     @PostMapping("/save")
     public String saveCharacter(@ModelAttribute Character character) {
-        data.saveCharacter(character);
-        return "redirect:/characters";
+        if (character.getId() == null) {
+            // Novi karakter
+            data.saveCharacter(character);
+        } else {
+            // Postojeći karakter, update
+            Character existing = data.findCharacter(character.getId());
+            if (existing != null) {
+                existing.setName(character.getName());
+                existing.setPower(character.getPower());
+                existing.setLives(character.getLives());
+                existing.setPoints(character.getPoints());
+                existing.setLevel(character.getLevel());
+                existing.setTools(character.getTools());
+            }
+        }
+        return "redirect:/";
     }
+
+    @GetMapping("/delete/{id}")
+    public String deleteCharacter(@PathVariable Long id) {
+        data.deleteCharacter(id);
+        return "redirect:/";
+    }
+
 
     // --- SHOW FORM TO EDIT CHARACTER ---
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
         Character character = data.findCharacter(id);
-        if (character == null) return "redirect:/characters";
+        if (character == null) return "redirect:/";
         model.addAttribute("character", character);
         return "editCharacter";
     }
 
-    // --- DELETE CHARACTER ---
-    @GetMapping("/delete/{id}")
-    public String deleteCharacter(@PathVariable Long id) {
-        Character character = data.findCharacter(id);
-        if (character != null) data.findAllCharacters().remove(character);
-        return "redirect:/characters";
-    }
+
 
     // --- TOOLS PAGE ---
     @GetMapping("/tools")
@@ -71,7 +85,7 @@ public class CharacterController {
     @PostMapping("/tools/buy")
     public String buyTool(@RequestParam Long characterId, @RequestParam Long toolId) {
         data.buyTool(characterId, toolId, 3);
-        return "redirect:/characters/tools";
+        return "redirect:/tools";
     }
 
     // --- BATTLE PAGE ---
@@ -86,7 +100,7 @@ public class CharacterController {
     @PostMapping("/battle/start")
     public String startBattle(@RequestParam Long characterId, Model model) {
         Character c = data.findCharacter(characterId);
-        if (c == null) return "redirect:/characters/battle";
+        if (c == null) return "redirect:/battle";
 
         var result = battleService.simulate(c);
 
