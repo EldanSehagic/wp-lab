@@ -59,3 +59,4 @@ Ažuriranje bodova, levela i života karaktera nakon borbe
 
 Pregled ihstorije svih borbi
 "# LAB2-" 
+"# LAB2-" 
