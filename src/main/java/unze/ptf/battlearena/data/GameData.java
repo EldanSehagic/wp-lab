@@ -84,5 +84,9 @@ public class GameData {
     public void deleteCharacter(Long id) {
         characters.remove(id);
     }
+    public void deleteTool(Long id) {
+        tools.remove(id);
+    }
+
 
 }
