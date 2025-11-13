@@ -72,21 +72,7 @@ public class CharacterController {
         return "editCharacter";
     }
 
-
-
-    // --- TOOLS PAGE ---
-    @GetMapping("/tools")
-    public String tools(Model model) {
-        model.addAttribute("tools", data.findAllTools());
-        model.addAttribute("characters", data.findAllCharacters());
-        return "tools";
-    }
-
-    @PostMapping("/tools/buy")
-    public String buyTool(@RequestParam Long characterId, @RequestParam Long toolId) {
-        data.buyTool(characterId, toolId, 3);
-        return "redirect:/tools";
-    }
+    
 
     // --- BATTLE PAGE ---
     @GetMapping("/battle")
