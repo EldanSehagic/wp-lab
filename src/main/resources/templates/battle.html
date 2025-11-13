@@ -14,13 +14,13 @@
 <body>
 <nav>
     <a href="/characters">Characters</a>
-    <a href="/tools">Tools</a>
-    <a href="/battle">Battle</a>
+    <a href="/characters/tools">Tools</a>
+    <a href="/characters/battle">Battle</a>
 </nav>
 
 <h2>Battle simulator</h2>
 
-<form th:action="@{/battle/start}" method="post">
+<form th:action="@{/characters/battle/start}" method="post">
     <label>Character:
         <select name="characterId" required>
             <option th:each="c : ${characters}" th:value="${c.id}"
@@ -38,7 +38,10 @@
 </form>
 
 <div class="card" th:if="${result != null}">
-    <h3 th:text="'Ishod: ' + ${result}"></h3>
+    <h3 th:text="'Ishod: ' + ${result.outcome}"></h3>
+    <p th:text="'Snaga protivnika: ' + ${result.opponentPower}"></p>
+    <p th:text="'Dobijeni bodovi: ' + ${result.gainedPoints}"></p>
+    <p th:text="'Novi level: ' + ${result.newLevel}"></p>
 
     <div class="row" th:if="${character != null}">
         <div class="col">

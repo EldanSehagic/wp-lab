@@ -5,18 +5,17 @@
     <title>Tools</title>
     <style>
         body { font-family: sans-serif; margin: 24px; }
+        nav a { margin-right: 12px; }
         table { border-collapse: collapse; width: 100%; }
         th, td { border: 1px solid #ddd; padding: 8px; }
         th { background: #f2f2f2; }
-        nav a { margin-right: 12px; }
-        form { display:inline; }
     </style>
 </head>
 <body>
 <nav>
     <a href="/characters">Characters</a>
-    <a href="/tools">Tools</a>
-    <a href="/battle">Battle</a>
+    <a href="/characters/tools">Tools</a>
+    <a href="/characters/battle">Battle</a>
 </nav>
 
 <h2>Tools</h2>
@@ -24,27 +23,27 @@
 <table>
     <thead>
     <tr>
-        <th>ID</th><th>Name</th><th>+Power</th><th>+Life</th><th>Kupovina (3 pts)</th>
+        <th>Name</th>
+        <th>Power Boost</th>
+        <th>Life Boost</th>
+        <th>Action</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="t : ${tools}">
-        <td th:text="${t.id}"></td>
         <td th:text="${t.name}"></td>
         <td th:text="${t.powerBoost}"></td>
         <td th:text="${t.lifeBoost}"></td>
         <td>
-            <form th:action="@{/tools/buy}" method="post">
-                <select name="characterId">
-                    <option th:each="c : ${characters}" th:value="${c.id}"
-                            th:text="${c.name + ' (pts: ' + c.points + ')'}"></option>
-                </select>
-                <input type="hidden" name="toolId" th:value="${t.id}"/>
-                <button type="submit">Kupi</button>
+            <form th:action="@{/characters/tools/buy}" method="post">
+                <input type="hidden" th:name="toolId" th:value="${t.id}"/>
+                <input type="hidden" th:name="characterId" th:value="${characters[0].id}"/>
+                <button type="submit">Buy</button>
             </form>
         </td>
     </tr>
     </tbody>
 </table>
+
 </body>
 </html>

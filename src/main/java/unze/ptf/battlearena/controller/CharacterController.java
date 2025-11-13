@@ -33,13 +33,13 @@ public class CharacterController {
     @GetMapping("/new")
     public String showAddForm(Model model) {
         model.addAttribute("character", new Character());
-        return "character-form"; // Napraviti character-form.html
+        return "editCharacter";
     }
 
     // --- SAVE NEW OR UPDATED CHARACTER ---
     @PostMapping("/save")
     public String saveCharacter(@ModelAttribute Character character) {
-        data.saveCharacter(character); // save radi i insert i update po ID
+        data.saveCharacter(character);
         return "redirect:/characters";
     }
 
@@ -47,20 +47,16 @@ public class CharacterController {
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
         Character character = data.findCharacter(id);
-        if (character == null) {
-            return "redirect:/characters";
-        }
+        if (character == null) return "redirect:/characters";
         model.addAttribute("character", character);
-        return "character-form"; // Isti form kao za dodavanje
+        return "editCharacter";
     }
 
     // --- DELETE CHARACTER ---
     @GetMapping("/delete/{id}")
     public String deleteCharacter(@PathVariable Long id) {
         Character character = data.findCharacter(id);
-        if (character != null) {
-            data.findAllCharacters().remove(character); // privremeno, kasnije u bazi ovo postaje repository.delete()
-        }
+        if (character != null) data.findAllCharacters().remove(character);
         return "redirect:/characters";
     }
 
